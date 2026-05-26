@@ -1,0 +1,51 @@
+#!/usr/bin/env sh
+set -eu
+
+usage() {
+  echo "Usage: ./setup-worktree <new-branch> [worktree-path]" >&2
+  echo "Example: ./setup-worktree feature/api ../chexplained-feature-api" >&2
+}
+
+if [ "${1:-}" = "-h" ] || [ "${1:-}" = "--help" ]; then
+  usage
+  exit 0
+fi
+
+if [ $# -lt 1 ] || [ $# -gt 2 ]; then
+  usage
+  exit 2
+fi
+
+script_dir=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+repo_name=$(basename "$script_dir")
+new_branch=$1
+safe_branch=$(printf "%s" "$new_branch" | sed "s#[^A-Za-z0-9._-]#-#g")
+worktree_path=${2:-"$script_dir/../$repo_name-$safe_branch"}
+
+git_cmd() {
+  if [ -d "$script_dir/.gitdata" ]; then
+    git --git-dir="$script_dir/.gitdata" --work-tree="$script_dir" "$@"
+  else
+    git -C "$script_dir" "$@"
+  fi
+}
+
+if git_cmd rev-parse --verify HEAD >/dev/null 2>&1; then
+  current_branch=$(git_cmd branch --show-current)
+  if [ -z "$current_branch" ]; then
+    current_branch=$(git_cmd rev-parse --short HEAD)
+  fi
+
+  echo "Creating worktree at: $worktree_path"
+  echo "New branch: $new_branch"
+  echo "Starting point: $current_branch"
+  git_cmd worktree add -b "$new_branch" "$worktree_path" "$current_branch"
+else
+  current_branch=$(git_cmd branch --show-current 2>/dev/null || true)
+  current_branch=${current_branch:-main}
+
+  echo "No commits exist on $current_branch yet."
+  echo "Creating orphan worktree at: $worktree_path"
+  echo "New branch: $new_branch"
+  git_cmd worktree add --orphan -b "$new_branch" "$worktree_path"
+fi

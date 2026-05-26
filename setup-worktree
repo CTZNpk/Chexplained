@@ -20,7 +20,7 @@ script_dir=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
 repo_name=$(basename "$script_dir")
 new_branch=$1
 safe_branch=$(printf "%s" "$new_branch" | sed "s#[^A-Za-z0-9._-]#-#g")
-worktree_path=${2:-"$script_dir/../$repo_name-$safe_branch"}
+worktree_path=${2:-"$script_dir/.worktrees/$repo_name-$safe_branch"}
 
 git_cmd() {
   if [ -d "$script_dir/.gitdata" ]; then

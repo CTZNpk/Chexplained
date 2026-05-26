@@ -3,7 +3,7 @@ import "./global.css";
 
 import { SafeAreaView, Text, View } from "react-native";
 
-import { StartingChessboard } from "./src/components/StartingChessboard";
+import { ChessBoard } from "./src/components/ChessBoard";
 
 export default function App() {
   return (
@@ -22,7 +22,7 @@ export default function App() {
           </Text>
         </View>
 
-        <StartingChessboard />
+        <ChessBoard />
       </View>
       <StatusBar style="light" />
     </SafeAreaView>

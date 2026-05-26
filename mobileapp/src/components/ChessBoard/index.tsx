@@ -3,9 +3,9 @@ import { useWindowDimensions, View } from "react-native";
 import Chessboard, { DefaultThemes } from "dawikk-chessboard";
 import { Chess } from "chess.js";
 
-import { STARTING_POSITION_FEN } from "../constants/chess";
+import { STARTING_POSITION_FEN } from "./constants";
 
-export function StartingChessboard() {
+export function ChessBoard() {
   const { width } = useWindowDimensions();
   const boardSize = Math.min(width - 32, 400);
   const [game] = useState(() => new Chess(STARTING_POSITION_FEN));

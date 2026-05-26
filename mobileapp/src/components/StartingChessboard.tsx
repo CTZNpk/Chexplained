@@ -1,14 +1,23 @@
+import { useCallback, useState } from "react";
 import { useWindowDimensions, View } from "react-native";
 import Chessboard, { DefaultThemes } from "dawikk-chessboard";
+import { Chess } from "chess.js";
 
-const STARTING_POSITION_FEN =
-  "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
-
-const ignoreReadonlyMove = () => undefined;
+import { STARTING_POSITION_FEN } from "../constants/chess";
 
 export function StartingChessboard() {
   const { width } = useWindowDimensions();
   const boardSize = Math.min(width - 32, 400);
+  const [game] = useState(() => new Chess(STARTING_POSITION_FEN));
+  const [fen, setFen] = useState(STARTING_POSITION_FEN);
+
+  const handleMove = useCallback(
+    (from: string, to: string, promotion?: string) => {
+      game.move({ from, to, promotion });
+      setFen(game.fen());
+    },
+    [game],
+  );
 
   return (
     <View className="items-center">
@@ -20,10 +29,9 @@ export function StartingChessboard() {
       >
         <Chessboard
           boardTheme={DefaultThemes.green}
-          fen={STARTING_POSITION_FEN}
-          onMove={ignoreReadonlyMove}
+          fen={fen}
+          onMove={handleMove}
           perspective="white"
-          readonly
           showCoordinates
         />
       </View>

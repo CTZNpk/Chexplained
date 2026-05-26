@@ -4,6 +4,7 @@
   "main": "index.ts",
   "dependencies": {
     "@expo/vector-icons": "^15.0.2",
+    "chess.js": "^1.4.0",
     "dawikk-chessboard": "^0.2.4",
     "expo": "~56.0.5",
     "expo-status-bar": "~56.0.4",

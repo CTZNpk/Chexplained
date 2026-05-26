@@ -22,8 +22,6 @@ export function ChessBoard() {
   return (
     <View className="items-center">
       <View
-        accessibilityLabel="Chessboard showing the standard starting position"
-        accessibilityRole="image"
         className="overflow-hidden rounded-lg border-4 border-stone-800 bg-stone-900 shadow-2xl"
         style={{ width: boardSize, height: boardSize }}
       >

@@ -14,13 +14,16 @@ fi
 
 case "$command" in
   start)
-    npx expo start --dev-client
+    npx expo start --dev-client --clear
     ;;
   web)
     npx expo start --web
     ;;
   go)
-    npx expo start
+    npx expo start --clear
+    ;;
+  tunnel)
+    npx expo start --tunnel --clear
     ;;
   build)
     npx eas build --profile development --platform "$platform"
@@ -32,7 +35,7 @@ case "$command" in
     npx eas whoami
     ;;
   *)
-    echo "Usage: ./start.sh [start|web|go|build|login|whoami] [android|ios|all]" >&2
+    echo "Usage: ./start.sh [start|web|go|tunnel|build|login|whoami] [android|ios|all]" >&2
     exit 2
     ;;
 esac
